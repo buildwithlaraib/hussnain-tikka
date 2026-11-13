@@ -1,26 +1,53 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Brand colors: used as classes like bg-ink, text-cream, bg-ember */
+@theme {
+  --color-ink: #0f1110;
+  --color-surface: #181b19;
+  --color-panel: #141816;
+  --color-line: #272b28;
+  --color-cream: #f4efe8;
+  --color-muted: #a39d93;
+  --color-ember: #c2410c;
+  --color-ember-dark: #9a3412;
+  --color-gold: #f2b24a;
 }
 
+/* Fonts are loaded in app/layout.tsx with next/font */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-barlow), "Arial Narrow", sans-serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #0f1110;
+  color: #f4efe8;
+}
+
+::selection {
+  background: #c2410c;
+  color: #ffffff;
+}
+
+/* Visible keyboard focus everywhere */
+:focus-visible {
+  outline: 2px solid #f2b24a;
+  outline-offset: 2px;
+}
+
+/* Respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }
