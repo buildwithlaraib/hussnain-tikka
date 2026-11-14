@@ -1,73 +1,64 @@
 "use client";
 
-import Image from "next/image";
-import { CATEGORIES, ITEMS, gradient } from "@/lib/menu";
+import { CATEGORIES, ITEMS } from "@/lib/menu";
 
 type Props = {
   active: string;
   onSelect: (id: string) => void;
 };
 
-const tileClass =
-  "relative flex h-28 flex-col justify-end overflow-hidden rounded-2xl border p-3.5 text-left transition hover:-translate-y-0.5 sm:h-32";
+const pill =
+  "inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-full border px-5 text-sm font-semibold transition duration-300";
 
+// Pill tabs that filter the menu. Categories without items stay hidden.
 export default function Categories({ active, onSelect }: Props) {
+  const tabs = CATEGORIES.map((cat) => ({
+    ...cat,
+    count: ITEMS.filter((i) => i.category === cat.id).length,
+  })).filter((cat) => cat.count > 0);
+
+  const popularCount = ITEMS.filter((i) => i.popular).length;
+
   return (
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-5">
-      {CATEGORIES.map((cat) => {
-        const count = ITEMS.filter((i) => i.category === cat.id).length;
-        const isActive = active === cat.id;
-        const inner = (
-          <>
-            {cat.image && (
-              <>
-                <Image
-                  src={cat.image}
-                  alt=""
-                  fill
-                  sizes="(min-width: 1024px) 220px, (min-width: 640px) 33vw, 50vw"
-                  className="object-cover"
-                />
-                {/* Dark overlay so the text stays readable on top of the photo */}
-                <span className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
-              </>
-            )}
-            <span className="relative text-[15px] font-semibold">{cat.name}</span>
-            {!cat.href && (
-              <span className="relative text-xs text-muted">
-                {count} {count === 1 ? "item" : "items"}
-              </span>
-            )}
-          </>
-        );
+    <div
+      role="tablist"
+      aria-label="Menu categories"
+      className="-mx-4 flex snap-x gap-2.5 overflow-x-auto px-4 pb-2 sm:mx-0 sm:flex-wrap sm:justify-center sm:overflow-visible sm:px-0"
+    >
+      <button
+        type="button"
+        role="tab"
+        aria-selected={active === "popular"}
+        onClick={() => onSelect("popular")}
+        className={`${pill} ${
+          active === "popular"
+            ? "border-gold bg-gold text-ink"
+            : "border-line text-cream hover:border-gold/60"
+        }`}
+      >
+        Popular <span className="text-xs opacity-70">{popularCount}</span>
+      </button>
 
-        // Tiles with an href jump to another section (e.g. deals)
-        if (cat.href) {
-          return (
-            <a
-              key={cat.id}
-              href={cat.href}
-              className={`${tileClass} border-line`}
-              style={{ background: gradient(cat.tone) }}
-            >
-              {inner}
-            </a>
-          );
-        }
+      {tabs.map((cat) => (
+        <button
+          key={cat.id}
+          type="button"
+          role="tab"
+          aria-selected={active === cat.id}
+          onClick={() => onSelect(cat.id)}
+          className={`${pill} ${
+            active === cat.id
+              ? "border-gold bg-gold text-ink"
+              : "border-line text-cream hover:border-gold/60"
+          }`}
+        >
+          {cat.name} <span className="text-xs opacity-70">{cat.count}</span>
+        </button>
+      ))}
 
-        return (
-          <button
-            key={cat.id}
-            type="button"
-            aria-pressed={isActive}
-            onClick={() => onSelect(cat.id)}
-            className={`${tileClass} ${isActive ? "border-gold ring-2 ring-gold/50" : "border-line"}`}
-            style={{ background: gradient(cat.tone) }}
-          >
-            {inner}
-          </button>
-        );
-      })}
+      <a href="#deals" className={`${pill} border-gold/40 text-gold hover:border-gold`}>
+        Deals and combos
+      </a>
     </div>
   );
 }

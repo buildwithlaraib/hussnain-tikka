@@ -1,42 +1,113 @@
 @import "tailwindcss";
 
-/* Brand colors: used as classes like bg-ink, text-cream, bg-ember */
+/* Brand colors: used as classes like bg-ink, text-cream, text-gold */
 @theme {
-  --color-ink: #0f1110;
-  --color-surface: #181b19;
-  --color-panel: #141816;
-  --color-line: #272b28;
-  --color-cream: #f4efe8;
-  --color-muted: #a39d93;
-  --color-ember: #c2410c;
-  --color-ember-dark: #9a3412;
-  --color-gold: #f2b24a;
+  --color-ink: #0d0f0e;
+  --color-surface: #151816;
+  --color-surface-2: #1b1f1c;
+  --color-line: #2a2f2b;
+  --color-cream: #f1e9d8;
+  --color-muted: #a8a08f;
+  --color-gold: #d4a24c;
+  --color-gold-light: #ecc983;
 }
 
 /* Fonts are loaded in app/layout.tsx with next/font */
 @theme inline {
-  --font-display: var(--font-barlow), "Arial Narrow", sans-serif;
-  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-dmsans), system-ui, sans-serif;
 }
 
 html {
+  background: #0d0f0e;
   scroll-behavior: smooth;
 }
 
+/* Soft gold glows on a near-black base */
 body {
-  background: #0f1110;
-  color: #f4efe8;
+  min-height: 100vh;
+  color: #f1e9d8;
+  background:
+    radial-gradient(900px 520px at 50% -8%, rgba(212, 162, 76, 0.12), transparent 65%),
+    radial-gradient(700px 480px at 100% 40%, rgba(212, 162, 76, 0.05), transparent 70%),
+    #0d0f0e;
+  background-repeat: no-repeat;
+}
+
+/* Fine film grain over the whole page for a tactile, premium feel */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
 
 ::selection {
-  background: #c2410c;
-  color: #ffffff;
+  background: #d4a24c;
+  color: #0d0f0e;
 }
 
-/* Visible keyboard focus everywhere */
 :focus-visible {
-  outline: 2px solid #f2b24a;
-  outline-offset: 2px;
+  outline: 2px solid #ecc983;
+  outline-offset: 3px;
+}
+
+/* Gradient gold text for emphasis words */
+.gold-text {
+  background: linear-gradient(100deg, #ecc983, #d4a24c 45%, #b9812c);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Fade-up on page load (hero) */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.fade-up {
+  animation: fade-up 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+/* Scroll reveal (toggled by components/Reveal.tsx) */
+.reveal {
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.reveal-hidden {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+/* Menu ticker and rotating badge */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes slow-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.animate-marquee {
+  animation: marquee 38s linear infinite;
+}
+.animate-slow-spin {
+  animation: slow-spin 26s linear infinite;
 }
 
 /* Respect users who prefer less motion */
@@ -44,10 +115,15 @@ body {
   html {
     scroll-behavior: auto;
   }
-  *,
-  *::before,
-  *::after {
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
+  .fade-up,
+  .animate-marquee,
+  .animate-slow-spin {
+    animation: none;
+  }
+  .reveal,
+  .reveal-hidden {
+    transition: none;
+    opacity: 1;
+    transform: none;
   }
 }

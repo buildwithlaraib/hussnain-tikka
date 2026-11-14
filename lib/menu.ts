@@ -9,9 +9,8 @@ export type Category = {
   id: string;
   name: string;
   tone: Tone;
-  /** When set, the tile scrolls to that section instead of filtering */
+  /** When set, the tab scrolls to that section instead of filtering */
   href?: string;
-  image?: string;
 };
 
 export type MenuItem = {
@@ -20,11 +19,11 @@ export type MenuItem = {
   description?: string;
   /** Base price in PKR */
   price: number;
-  /** Show "From Rs. X" (for items with sizes) */
+  /** Show "from Rs. X" (for items with sizes) */
   fromPrice?: boolean;
   category: string;
   popular?: boolean;
-  /** Optional photo, e.g. "/images/zinger-burger.jpg" (file lives in /public/images) */
+  /** Optional photo, e.g. "/2.jpg" (file lives in /public) */
   image?: string;
   /** Gradient used as a placeholder until a photo is added */
   tone: Tone;
@@ -55,9 +54,14 @@ export const RESTAURANT = {
   addressLines: ["Jaffrypull, near Bluebells School,", "Mughalpura, Lahore 54840"],
   mapsQuery: "Jaffrypull near Bluebells School Mughalpura Lahore",
   hours: [{ day: "Every day", time: "6:00 PM to 3:00 AM" }],
-  // Optional round hero photo, e.g. "/images/hero.jpg"
-  heroImage: "/hero.jpg",
 };
+
+/** Three arch-shaped photos in the hero (the middle one is larger) */
+export const HERO_GALLERY = [
+  { src: "/2.jpg", alt: "Crispy zinger burger", label: "Zinger Burger" },
+  { src: "/1.jpg", alt: "Charcoal grilled chicken kabab", label: "Chicken Kabab" },
+  { src: "/4.jpg", alt: "Chicken tikka pizza", label: "Tikka Pizza" },
+];
 
 export const DELIVERY = {
   area: "Mughalpura to Lalpull",
@@ -67,16 +71,16 @@ export const DELIVERY = {
 };
 
 export const CATEGORIES: Category[] = [
-  { id: "bbq", name: "BBQ", tone: ["#3a1a0c", "#1a1210"], image: "/1.jpg" },
-  { id: "burgers", name: "Burgers", tone: ["#3a280c", "#1a1610"], image: "/2.jpg" },
-  { id: "shawarma", name: "Shawarma", tone: ["#33200f", "#161210"], image: "/3.jpg" },
-  { id: "pizza", name: "Pizza", tone: ["#3a1410", "#1a1010"], image: "/4.jpg" },
-  { id: "fries", name: "Fries", tone: ["#3a300c", "#1a1810"], image: "/5.jpg" },
-  { id: "rolls", name: "Rolls", tone: ["#2e1a10", "#151110"], image: "/6.jpg" },
-  { id: "platters", name: "Platters", tone: ["#2a2010", "#151310"], image: "/7.jpg" },
-  { id: "deals", name: "Deals and combos", tone: ["#4a1f0c", "#1c1210"], href: "#deals", image: "/8.jpg" },
-  { id: "drinks", name: "Drinks", tone: ["#0f2a2a", "#101616"], image: "/9.jpg" },
+  { id: "bbq", name: "BBQ", tone: ["#3a1a0c", "#1a1210"] },
+  { id: "burgers", name: "Burgers", tone: ["#3a280c", "#1a1610"] },
+  { id: "shawarma", name: "Shawarma", tone: ["#33200f", "#161210"] },
+  { id: "pizza", name: "Pizza", tone: ["#3a1410", "#1a1010"] },
+  { id: "fries", name: "Fries", tone: ["#3a300c", "#1a1810"] },
+  { id: "rolls", name: "Rolls", tone: ["#2e1a10", "#151110"] },
+  { id: "platters", name: "Platters", tone: ["#2a2010", "#151310"] },
+  { id: "drinks", name: "Drinks", tone: ["#0f2a2a", "#101616"] },
 ];
+
 export const ITEMS: MenuItem[] = [
   {
     id: "zinger-burger",
@@ -85,8 +89,8 @@ export const ITEMS: MenuItem[] = [
     price: 300,
     category: "burgers",
     popular: true,
-    tone: ["#4a2a10", "#1c1410"],
     image: "/2.jpg",
+    tone: ["#4a2a10", "#1c1410"],
   },
   {
     id: "chicken-tikka-pizza",
@@ -96,8 +100,8 @@ export const ITEMS: MenuItem[] = [
     fromPrice: true,
     category: "pizza",
     popular: true,
-    tone: ["#4a1c10", "#1c1210"],
     image: "/4.jpg",
+    tone: ["#4a1c10", "#1c1210"],
   },
   {
     id: "bihari-wrap",
@@ -105,8 +109,8 @@ export const ITEMS: MenuItem[] = [
     price: 400,
     category: "rolls",
     popular: true,
+    image: "/wrap.jpg",
     tone: ["#3a2a14", "#1a1610"],
-    image: "/wrap.jpg"
   },
   {
     id: "shawarma-platter",
@@ -115,8 +119,8 @@ export const ITEMS: MenuItem[] = [
     price: 400,
     category: "platters",
     popular: true,
+    image: "/3.jpg",
     tone: ["#443010", "#1a1610"],
-    image: "/3.jpg"
   },
   {
     id: "chicken-kabab",
@@ -124,8 +128,8 @@ export const ITEMS: MenuItem[] = [
     price: 130,
     category: "bbq",
     popular: true,
+    image: "/1.jpg",
     tone: ["#4a2210", "#1c1210"],
-    image: "/1.jpg"
   },
   {
     id: "grilled-fish",
@@ -133,8 +137,8 @@ export const ITEMS: MenuItem[] = [
     price: 1300,
     category: "bbq",
     popular: true,
+    image: "/fish.jpg",
     tone: ["#2a3a1a", "#141a12"],
-    image: "/fish.jpg"
   },
 ];
 

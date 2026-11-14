@@ -1,19 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import { Barlow_Condensed, Inter } from "next/font/google";
+import { DM_Sans, Fraunces } from "next/font/google";
+import { CartProvider } from "@/components/CartProvider";
 import "./globals.css";
 
-// Display font for headings and prices
-const barlow = Barlow_Condensed({
+// Elegant serif for headings, prices and the brand name
+const fraunces = Fraunces({
   subsets: ["latin"],
-  weight: ["600", "700"],
-  variable: "--font-barlow",
+  style: ["normal", "italic"],
+  variable: "--font-fraunces",
   display: "swap",
 });
 
-// Body font
-const inter = Inter({
+// Clean sans for body text and buttons
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-dmsans",
   display: "swap",
 });
 
@@ -24,15 +25,18 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0f1110",
+  themeColor: "#0d0f0e",
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${barlow.variable} ${inter.variable}`}>
-      <body className="font-sans antialiased">{children}</body>
+    <html lang="en" className={`${fraunces.variable} ${dmSans.variable}`}>
+      <body className="font-sans antialiased">
+        {/* The cart provider wraps the whole app so every component can use the cart */}
+        <CartProvider>{children}</CartProvider>
+      </body>
     </html>
   );
 }
