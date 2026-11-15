@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Cache Components is turned off: this site does not need it
+  // Keeps the app on the classic rendering model (avoids Cache Components errors)
   cacheComponents: false,
 };
 

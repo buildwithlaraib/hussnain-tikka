@@ -3,7 +3,7 @@ import { DM_Sans, Fraunces } from "next/font/google";
 import { CartProvider } from "@/components/CartProvider";
 import "./globals.css";
 
-// Elegant serif for headings, prices and the brand name
+// Serif for headings, prices and the brand name
 const fraunces = Fraunces({
   subsets: ["latin"],
   style: ["normal", "italic"],
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0d0f0e",
+  themeColor: "#f6efe4",
 };
 
 export default function RootLayout({

@@ -7,7 +7,7 @@ import { useCart } from "./CartProvider";
 type Fulfilment = "delivery" | "pickup";
 
 const inputClass =
-  "h-12 w-full rounded-xl border border-line bg-ink px-4 text-[15px] text-cream outline-none placeholder:text-muted/60 focus:border-gold";
+  "h-12 w-full rounded-xl border border-line bg-white px-4 text-[15px] text-ink outline-none placeholder:text-muted/60 focus:border-rust";
 
 export default function CartDrawer() {
   const { lines, count, subtotal, isOpen, close, setQty, remove, clear } = useCart();
@@ -91,7 +91,7 @@ export default function CartDrawer() {
       {/* Dimmed backdrop */}
       <div
         onClick={close}
-        className={`absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity duration-300 ${
+        className={`absolute inset-0 bg-black/55 backdrop-blur-sm transition-opacity duration-300 ${
           isOpen ? "opacity-100" : "opacity-0"
         }`}
       />
@@ -101,21 +101,21 @@ export default function CartDrawer() {
         aria-modal="true"
         aria-label="Your order"
         inert={!isOpen}
-        className={`absolute right-0 top-0 h-full w-full max-w-md border-l border-line bg-surface shadow-2xl transition-transform duration-300 ${
+        className={`absolute right-0 top-0 h-full w-full max-w-md bg-cream shadow-2xl transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         <form onSubmit={handleSubmit} noValidate className="flex h-full flex-col">
           {/* Header */}
           <div className="flex items-center justify-between border-b border-line px-5 py-4">
-            <h2 className="font-display text-3xl font-semibold">
-              Your order {count > 0 && <span className="text-gold">({count})</span>}
+            <h2 className="font-display text-3xl font-bold">
+              Your order {count > 0 && <span className="text-rust">({count})</span>}
             </h2>
             <button
               type="button"
               onClick={close}
               aria-label="Close cart"
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-line hover:border-gold"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-ink/20 hover:border-ink"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
                 <path d="M6 6l12 12M18 6L6 18" />
@@ -127,12 +127,12 @@ export default function CartDrawer() {
           <div className="flex-1 space-y-6 overflow-y-auto px-5 py-5">
             {detailed.length === 0 ? (
               <div className="py-16 text-center">
-                <p className="font-display text-2xl">Your cart is empty</p>
+                <p className="font-display text-2xl font-semibold">Your cart is empty</p>
                 <p className="mt-1 text-sm text-muted">Add something delicious from the menu.</p>
                 <button
                   type="button"
                   onClick={close}
-                  className="mt-6 min-h-11 rounded-full bg-gold px-7 text-sm font-semibold uppercase tracking-[0.14em] text-ink hover:bg-gold-light"
+                  className="mt-6 min-h-11 rounded-full bg-rust px-7 text-sm font-semibold uppercase tracking-[0.14em] text-white hover:bg-rust-dark"
                 >
                   Browse menu
                 </button>
@@ -142,10 +142,10 @@ export default function CartDrawer() {
                 {/* Cart lines */}
                 <ul className="space-y-3">
                   {detailed.map((line) => (
-                    <li key={line.id} className="rounded-2xl border border-line bg-ink p-4">
+                    <li key={line.id} className="rounded-2xl border border-line bg-paper p-4">
                       <div className="flex items-start justify-between gap-3">
                         <p className="font-display text-xl font-semibold">{line.name}</p>
-                        <p className="shrink-0 font-semibold text-gold">{formatPrice(line.price * line.qty)}</p>
+                        <p className="shrink-0 font-semibold text-rust">{formatPrice(line.price * line.qty)}</p>
                       </div>
                       <div className="mt-3 flex items-center justify-between">
                         <div className="flex items-center gap-2">
@@ -153,7 +153,7 @@ export default function CartDrawer() {
                             type="button"
                             onClick={() => setQty(line.id, line.qty - 1)}
                             aria-label={`Decrease ${line.name}`}
-                            className="flex h-9 w-9 items-center justify-center rounded-full border border-line text-lg hover:border-gold"
+                            className="flex h-9 w-9 items-center justify-center rounded-full border border-ink/20 text-lg hover:border-ink"
                           >
                             −
                           </button>
@@ -164,7 +164,7 @@ export default function CartDrawer() {
                             type="button"
                             onClick={() => setQty(line.id, line.qty + 1)}
                             aria-label={`Increase ${line.name}`}
-                            className="flex h-9 w-9 items-center justify-center rounded-full border border-line text-lg hover:border-gold"
+                            className="flex h-9 w-9 items-center justify-center rounded-full border border-ink/20 text-lg hover:border-ink"
                           >
                             +
                           </button>
@@ -172,7 +172,7 @@ export default function CartDrawer() {
                         <button
                           type="button"
                           onClick={() => remove(line.id)}
-                          className="min-h-9 text-sm text-muted underline hover:text-cream"
+                          className="min-h-9 text-sm text-muted underline hover:text-ink"
                         >
                           Remove
                         </button>
@@ -193,8 +193,8 @@ export default function CartDrawer() {
                         onClick={() => setFulfilment(type)}
                         className={`min-h-11 rounded-xl border text-sm font-semibold capitalize transition ${
                           fulfilment === type
-                            ? "border-gold bg-gold/10 text-gold"
-                            : "border-line text-cream/80 hover:border-gold/50"
+                            ? "border-rust bg-rust text-white"
+                            : "border-line bg-paper hover:border-ink/40"
                         }`}
                       >
                         {type}
@@ -227,7 +227,7 @@ export default function CartDrawer() {
                   </div>
                 </div>
 
-                <button type="button" onClick={clear} className="text-sm text-muted underline hover:text-cream">
+                <button type="button" onClick={clear} className="text-sm text-muted underline hover:text-ink">
                   Clear cart
                 </button>
               </>
@@ -236,7 +236,7 @@ export default function CartDrawer() {
 
           {/* Footer: totals and checkout */}
           {detailed.length > 0 && (
-            <div className="space-y-3 border-t border-line bg-ink px-5 py-4">
+            <div className="space-y-3 border-t border-line bg-paper px-5 py-4">
               <dl className="space-y-1 text-sm">
                 <div className="flex justify-between text-muted">
                   <dt>Subtotal</dt>
@@ -250,19 +250,19 @@ export default function CartDrawer() {
                 )}
                 <div className="flex justify-between pt-1 text-base font-semibold">
                   <dt>Total</dt>
-                  <dd className="font-display text-2xl text-gold">{formatPrice(total)}</dd>
+                  <dd className="font-display text-2xl text-rust">{formatPrice(total)}</dd>
                 </div>
               </dl>
 
               {error && (
-                <p role="alert" className="rounded-xl border border-red-400/40 bg-red-500/10 px-3 py-2 text-sm text-red-200">
+                <p role="alert" className="rounded-xl border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700">
                   {error}
                 </p>
               )}
 
               <button
                 type="submit"
-                className="flex min-h-12 w-full items-center justify-center rounded-full bg-gold text-sm font-semibold uppercase tracking-[0.16em] text-ink transition hover:bg-gold-light"
+                className="flex min-h-12 w-full items-center justify-center rounded-full bg-rust text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-rust-dark"
               >
                 Order on WhatsApp
               </button>

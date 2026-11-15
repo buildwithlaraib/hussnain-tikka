@@ -3,23 +3,32 @@
 import { useEffect, useState } from "react";
 import { useCart } from "./CartProvider";
 
+type Variant = "solid" | "outline" | "icon";
+
 type Props = {
   id: string;
+  /** Button text (or the accessible name for the icon variant) */
   label?: string;
-  variant?: "outline" | "solid";
+  variant?: Variant;
   className?: string;
 };
 
-const styles = {
-  outline: "border border-gold/60 text-gold hover:bg-gold hover:text-ink",
-  solid: "border border-gold bg-gold text-ink hover:bg-gold-light",
+const base =
+  "inline-flex items-center justify-center transition duration-300 active:scale-95";
+
+const styles: Record<Variant, string> = {
+  solid:
+    "min-h-11 gap-2 rounded-full bg-rust px-6 text-sm font-semibold uppercase tracking-[0.12em] text-white hover:bg-rust-dark",
+  outline:
+    "min-h-11 gap-2 rounded-full border border-ink/25 px-6 text-sm font-semibold uppercase tracking-[0.12em] text-ink hover:border-ink hover:bg-ink hover:text-cream",
+  icon: "h-10 w-10 shrink-0 rounded-full border",
 };
 
 // Adds a product to the cart and briefly confirms with a check mark
 export default function AddToCartButton({
   id,
   label = "Add to order",
-  variant = "outline",
+  variant = "solid",
   className = "",
 }: Props) {
   const { add } = useCart();
@@ -32,6 +41,16 @@ export default function AddToCartButton({
     return () => clearTimeout(timer);
   }, [added]);
 
+  const icon = added ? (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M5 12l5 5L20 7" />
+    </svg>
+  ) : (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true">
+      <path d="M12 5v14M5 12h14" />
+    </svg>
+  );
+
   return (
     <button
       type="button"
@@ -39,14 +58,17 @@ export default function AddToCartButton({
         add(id);
         setAdded(true);
       }}
-      className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6 text-sm font-semibold uppercase tracking-[0.12em] transition duration-300 active:scale-95 ${styles[variant]} ${className}`}
+      aria-label={variant === "icon" ? label : undefined}
+      className={`${base} ${styles[variant]} ${className}`}
     >
-      {added && (
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <path d="M5 12l5 5L20 7" />
-        </svg>
+      {variant === "icon" ? (
+        icon
+      ) : (
+        <>
+          {added && icon}
+          <span aria-live="polite">{added ? "Added" : label}</span>
+        </>
       )}
-      <span aria-live="polite">{added ? "Added" : label}</span>
     </button>
   );
 }
